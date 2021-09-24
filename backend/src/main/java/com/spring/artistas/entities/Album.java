@@ -8,34 +8,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_artista")
-public class Artista implements Serializable {
+@Table(name = "tb_album")
+public class Album implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private String nacionalidade;
-	
-	@ManyToMany
-	@JoinTable(name = "tb_artista_album", 
-			joinColumns = @JoinColumn(name = "artista_id"), // id da própria classe
-			inverseJoinColumns = @JoinColumn(name = "album_id")) // id da outra tabela
-	private List<Album> albuns = new ArrayList<>();	
-	public Artista() {
-		
+	private Integer ano;
+
+	@ManyToMany(mappedBy = "albuns")
+	private List<Artista> participantes = new ArrayList<>();
+
+	public Album() {
+
 	}
 
-	public Artista(Integer id, String nome, String nacionalidade) {
+	public Album(Integer id, String nome, Integer ano) {
 		this.id = id;
 		this.nome = nome;
-		this.nacionalidade = nacionalidade;
+		this.ano = ano;
 	}
 
 	public Integer getId() {
@@ -54,16 +51,16 @@ public class Artista implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getNacionalidade() {
-		return nacionalidade;
+	public Integer getAno() {
+		return ano;
 	}
 
-	public void setNacionalidade(String nacionalidade) {
-		this.nacionalidade = nacionalidade;
+	public void setAno(Integer ano) {
+		this.ano = ano;
 	}
 
-	public List<Album> getAlbuns() {
-		return albuns;
+	public List<Artista> getParticipantes() {
+		return participantes;
 	}
 
 	@Override
@@ -82,7 +79,7 @@ public class Artista implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Artista other = (Artista) obj;
+		Album other = (Album) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
