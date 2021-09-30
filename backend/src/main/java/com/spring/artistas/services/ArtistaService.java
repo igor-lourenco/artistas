@@ -3,6 +3,8 @@ package com.spring.artistas.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,12 @@ public class ArtistaService {
 	
 	@Autowired
 	private MusicaRepository musicaRepository;
+	
+	@Transactional(readOnly = true)
+	public Page<ArtistaDTO> findAllPaged(Pageable pageable) {
+		Page<Artista> entity = repository.findAll(pageable);
+		return entity.map(x -> new ArtistaDTO(x, x.getAlbuns(), x.getMusicasComoAutor()));
+	}
 	
 	@Transactional(readOnly = true)
 	public ArtistaDTO findById(Integer id) {

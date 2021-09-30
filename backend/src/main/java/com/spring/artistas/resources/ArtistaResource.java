@@ -3,6 +3,8 @@ package com.spring.artistas.resources;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,12 @@ public class ArtistaResource {
 
 	@Autowired
 	private ArtistaService service;
+	
+	@GetMapping
+	public ResponseEntity<Page<ArtistaDTO>> findById(Pageable pageable) {
+		Page<ArtistaDTO> entity = service.findAllPaged(pageable);
+		return ResponseEntity.ok().body(entity);
+	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ArtistaDTO> findById(@PathVariable Integer id) {
