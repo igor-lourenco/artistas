@@ -8,41 +8,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_artista")
-public class Artista implements Serializable {
+@Table(name = "tb_musica")
+public class Musica implements Serializable {
 	private static final long serialVersionUID = 1L;
+ 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private String nacionalidade;
+	private Integer duracao;
 	
-	@ManyToMany
-	@JoinTable(name = "tb_artista_album", 
-			joinColumns = @JoinColumn(name = "artista_id"), // id da própria classe
-			inverseJoinColumns = @JoinColumn(name = "album_id")) // id da outra tabela
-	private List<Album> albuns = new ArrayList<>();	
+	@ManyToMany(mappedBy = "musicasComoAutor")
+	private List<Artista> autores = new ArrayList<>();
 	
-	@ManyToMany
-	@JoinTable(name = "tb_artista_musica", 
-			joinColumns = @JoinColumn(name = "artista_id"), // id da própria classe
-			inverseJoinColumns = @JoinColumn(name = "musica_id")) // id da outra tabela
-	private List<Musica> musicasComoAutor = new ArrayList<>();
-	
-	public Artista() {
+	public Musica() {
 		
 	}
 
-	public Artista(Integer id, String nome, String nacionalidade) {
+	public Musica(Integer id, String nome, Integer duracao) {
 		this.id = id;
 		this.nome = nome;
-		this.nacionalidade = nacionalidade;
+		this.duracao = duracao;
 	}
 
 	public Integer getId() {
@@ -61,20 +51,16 @@ public class Artista implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getNacionalidade() {
-		return nacionalidade;
+	public Integer getDuracao() {
+		return duracao;
 	}
 
-	public void setNacionalidade(String nacionalidade) {
-		this.nacionalidade = nacionalidade;
+	public void setDuracao(Integer duracao) {
+		this.duracao = duracao;
 	}
 
-	public List<Album> getAlbuns() {
-		return albuns;
-	}
-
-	public List<Musica> getMusicasComoAutor() {
-		return musicasComoAutor;
+	public List<Artista> getAutores() {
+		return autores;
 	}
 
 	@Override
@@ -93,7 +79,7 @@ public class Artista implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Artista other = (Artista) obj;
+		Musica other = (Musica) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

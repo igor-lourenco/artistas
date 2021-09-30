@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.spring.artistas.entities.Album;
 import com.spring.artistas.entities.Artista;
+import com.spring.artistas.entities.Musica;
 
 public class ArtistaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -16,6 +17,7 @@ public class ArtistaDTO implements Serializable {
 	private String nacionalidade;
 	
 	private Set<AlbumDTO> albuns = new HashSet<>();	
+	private Set<MusicaDTO> musicasComoAutor = new HashSet<>();
 	
 	public ArtistaDTO() {
 		
@@ -33,9 +35,10 @@ public class ArtistaDTO implements Serializable {
 		nacionalidade = entity.getNacionalidade();
 	}
 	
-	public ArtistaDTO(Artista entity, List<Album> albuns) {
+	public ArtistaDTO(Artista entity, List<Album> albuns, List<Musica> musicasComoAutor) {
 		this(entity);
 		albuns.forEach(alb -> this.albuns.add(new AlbumDTO(alb)));
+		musicasComoAutor.forEach(musicas -> this.musicasComoAutor.add(new MusicaDTO(musicas)));
 	}
 
 	public Integer getId() {
@@ -64,5 +67,9 @@ public class ArtistaDTO implements Serializable {
 
 	public Set<AlbumDTO> getAlbuns() {
 		return albuns;
+	}
+
+	public Set<MusicaDTO> getMusicasComoAutor() {
+		return musicasComoAutor;
 	}
 }

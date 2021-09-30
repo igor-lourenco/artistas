@@ -21,6 +21,6 @@ public class ArtistaService {
 	public ArtistaDTO findById(Integer id) {
 		Optional<Artista> obj = repository.findById(id);
 		Artista entity = obj.orElseThrow(() -> new ResourceNotFoundException("Artista não encontrado -> " + id));
-		return new ArtistaDTO(entity, entity.getAlbuns());
+		return new ArtistaDTO(entity, entity.getAlbuns(), entity.getMusicasComoAutor());
 	}
 }
