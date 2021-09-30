@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import com.spring.artistas.entities.Musica;
 import com.spring.artistas.repositories.AlbumRepository;
 import com.spring.artistas.repositories.ArtistaRepository;
 import com.spring.artistas.repositories.MusicaRepository;
+import com.spring.artistas.services.exception.DatabaseException;
 import com.spring.artistas.services.exception.ResourceNotFoundException;
 
 @Service
@@ -63,6 +66,16 @@ public class ArtistaService {
 			return new ArtistaDTO(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id não encontrado " + id);
+		}
+	}
+	
+	public void  delete(Integer id) {
+		try {
+			repository.deleteById(id);
+		}catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("id não existe " + id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DatabaseException("Violação de integridade no banco");
 		}
 	}
 
