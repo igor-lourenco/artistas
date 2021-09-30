@@ -27,7 +27,7 @@ public class ArtistaResource {
 	private ArtistaService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<ArtistaDTO>> findById(Pageable pageable) {
+	public ResponseEntity<Page<ArtistaDTO>> findAllPaged(Pageable pageable) {
 		Page<ArtistaDTO> entity = service.findAllPaged(pageable);
 		return ResponseEntity.ok().body(entity);
 	}
@@ -53,7 +53,7 @@ public class ArtistaResource {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<ArtistaDTO> update(@PathVariable Integer id) {
+	public ResponseEntity<ArtistaDTO> delete(@PathVariable Integer id) {
 		 service.delete(id);	
 		return ResponseEntity.noContent().build();
 	}
